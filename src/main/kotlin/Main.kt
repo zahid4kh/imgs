@@ -23,7 +23,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         state = rememberWindowState(size = DpSize(800.dp, 600.dp)),
         alwaysOnTop = true,
-        title = "IMGS - Made with Compose for Desktop Wizard",
+        title = "IMGS",
         icon = painterResource(Res.drawable.appIcon)
     ) {
         window.minimumSize = Dimension(800, 600)
