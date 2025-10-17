@@ -38,7 +38,7 @@ chmod +x gradlew
 
 #### Hot Reload (Recommended for Development)
 ```bash
-./gradlew :runHot --mainClass IMGS --auto
+./gradlew :hotRun --mainClass IMGS --auto
 ```
 
 This enables automatic recompilation and hot swapping when you modify your code, making development much faster.
