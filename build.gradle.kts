@@ -42,6 +42,8 @@ dependencies {
 
     // Deskit - for Material3 file chooser and information dialogs
     implementation(libs.deskit)
+
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
 }
 
 
