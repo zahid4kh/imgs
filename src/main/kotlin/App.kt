@@ -22,6 +22,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
 import coil3.compose.AsyncImage
 import deskit.dialogs.info.InfoDialog
 import deskit.dialogs.info.InfoDialogSample
@@ -62,11 +63,17 @@ fun App(
             }
 
             uiState.clickedImage?.let{ image ->
-                AsyncImage(
-                    model = image.absolutePath,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize().padding(20.dp)
-                )
+                Window(
+                    onCloseRequest = { viewModel.closeImageDialog() },
+                    title = image.nameWithoutExtension
+                ){
+                    AsyncImage(
+                        model = image.absolutePath,
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize().padding(20.dp)
+                    )
+                }
             }
         }
 
