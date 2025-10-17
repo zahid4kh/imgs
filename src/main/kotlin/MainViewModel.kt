@@ -32,7 +32,8 @@ class MainViewModel(
 
     private fun loadImages(){
         scope.launch(Dispatchers.IO) {
-            val images = picsDir.listFiles().toList()
+            val images = picsDir.listFiles().toList().filter { it.isFile }
+            println("Loaded ${images.size} images")
             withContext(Dispatchers.Main){
                 _uiState.update {
                     it.copy(
