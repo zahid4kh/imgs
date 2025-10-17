@@ -49,6 +49,14 @@ class MainViewModel(
         }
     }
 
+    fun handleImageClick(image: File){
+        _uiState.update { it.copy(clickedImage = image) }
+    }
+
+    fun closeImageDialog(){
+        _uiState.update { it.copy(clickedImage = null) }
+    }
+
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
@@ -61,6 +69,7 @@ class MainViewModel(
 
     data class UiState(
         val darkMode: Boolean = false,
-        val images: List<File> = emptyList()
+        val images: List<File> = emptyList(),
+        val clickedImage: File? = null
     )
 }
