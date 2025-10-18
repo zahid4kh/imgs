@@ -110,6 +110,10 @@ class MainViewModel(
         _uiState.update { it.copy(isSettingsShown = false) }
     }
 
+    fun togglePreviewOnHover(){
+        _uiState.update { it.copy(isPreviewOnHoverOn = !it.isPreviewOnHoverOn) }
+    }
+
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
@@ -127,6 +131,7 @@ class MainViewModel(
         val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
         val pathSegments: List<File> = emptyList(),
         val isInfoDialogShown: Boolean = false,
-        val isSettingsShown: Boolean = false
+        val isSettingsShown: Boolean = false,
+        val isPreviewOnHoverOn: Boolean = false
     )
 }

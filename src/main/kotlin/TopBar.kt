@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,8 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.WindowScope
+import theme.getJetbrainsMonoFamily
 
 @Composable
 fun WindowScope.TopBar(
@@ -96,6 +100,28 @@ fun WindowScope.TopBar(
                                             Icon(
                                                 imageVector = if(uiState.darkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
                                                 contentDescription = null
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
+                                            .padding(horizontal = 3.dp)
+                                            .clip(MaterialTheme.shapes.large)
+                                    )
+
+                                    DropdownMenuItem(
+                                        text = { Text("Preview on hover") },
+                                        onClick = { viewModel.togglePreviewOnHover() },
+                                        trailingIcon = {
+                                            Switch(
+                                                checked = uiState.isPreviewOnHoverOn,
+                                                onCheckedChange = { viewModel.togglePreviewOnHover() },
+                                                thumbContent = {
+                                                    Text(
+                                                        text = if(uiState.isPreviewOnHoverOn) "On" else "Off",
+                                                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp, fontWeight = FontWeight.Bold),
+                                                        fontFamily = getJetbrainsMonoFamily()
+                                                    )
+                                                }
                                             )
                                         },
                                         modifier = Modifier
