@@ -12,6 +12,7 @@ import java.awt.Image
 import java.awt.image.BufferedImage
 import java.io.BufferedWriter
 import java.io.File
+import java.io.IOException
 
 class MainViewModel(
     private val database: Database,
@@ -55,6 +56,15 @@ class MainViewModel(
 
     fun closeImageDialog(){
         _uiState.update { it.copy(clickedImage = null) }
+    }
+
+    fun deleteImage(image: File){
+        try {
+            image.delete()
+            loadImages()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }
     }
 
     fun toggleDarkMode() {
