@@ -116,15 +116,19 @@ fun App(
                     onCloseRequest = { viewModel.closeImageDialog() },
                     title = image.nameWithoutExtension
                 ){
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalPlatformContext.current)
-                            .data(image.absolutePath)
-                            .size(Size.ORIGINAL)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.fillMaxSize().padding(20.dp)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+                    ){
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalPlatformContext.current)
+                                .data(image.absolutePath)
+                                .size(Size.ORIGINAL)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.fillMaxSize().padding(20.dp)
+                        )
+                    }
                 }
             }
         }
