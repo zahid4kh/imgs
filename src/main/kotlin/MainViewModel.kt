@@ -19,23 +19,26 @@ class MainViewModel(
     private val homeDir = System.getProperty("user.home")
     private val picsDir = File("$homeDir/Pictures")
 
-    private val _currentPath = MutableStateFlow(File("$picsDir"))
-    val currentPath = _currentPath.asStateFlow()
-
     init {
         viewModelScope.launch {
+            generatePathSegments()
             val settings = database.getSettings()
-            _uiState.value = _uiState.value.copy(
-                darkMode = settings.darkMode,
-            )
+            withContext(Dispatchers.Main){
+                _uiState.update {
+                    it.copy(
+                        darkMode = settings.darkMode
+                    )
+                }
+            }
         }
-        println("Current path is: ${_currentPath.value.absolutePath}")
+
+        println("Current path is: ${_uiState.value.currentPath?.absolutePath}")
         loadFiles()
     }
 
     private fun loadFiles(){
         viewModelScope.launch(Dispatchers.IO) {
-            val files = _currentPath.value.listFiles().toList().sorted()
+            val files = _uiState.value.currentPath.listFiles().toList().sorted()
             println("Loaded ${files.size} files")
             withContext(Dispatchers.Main){
                 _uiState.update {
@@ -48,8 +51,8 @@ class MainViewModel(
     }
 
     fun updateCurrentDir(dir: File){
-        _currentPath.value = dir
-        println("Current path is: ${dir.absolutePath}")
+        _uiState.update { it.copy(currentPath = dir) }
+        println("Current path is: ${_uiState.value.currentPath}")
         loadFiles()
     }
 
@@ -70,6 +73,14 @@ class MainViewModel(
         }
     }
 
+    fun generatePathSegments(){
+        val pathSegments = generateSequence(_uiState.value.currentPath) { it.parentFile }
+            .toList()
+            .asReversed()
+
+        _uiState.update { it.copy(pathSegments = pathSegments) }
+    }
+
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
@@ -83,6 +94,8 @@ class MainViewModel(
     data class UiState(
         val darkMode: Boolean = false,
         val files: List<File> = emptyList(),
-        val clickedImage: File? = null
+        val clickedImage: File? = null,
+        val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
+        val pathSegments: List<File> = emptyList()
     )
 }
