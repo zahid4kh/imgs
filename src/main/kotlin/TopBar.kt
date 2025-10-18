@@ -6,7 +6,9 @@ import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CropSquare
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Minimize
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,6 +52,17 @@ fun WindowScope.TopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ){
+                TopBarIcon(
+                    onClick = { viewModel.showInfoDialog() },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            contentDescription = null
+                        )
+                    }
+                )
+
                 TopBarIcon(
                     onClick = { onMinimizeWindow() },
                     icon = {

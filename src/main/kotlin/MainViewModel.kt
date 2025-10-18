@@ -81,6 +81,14 @@ class MainViewModel(
         _uiState.update { it.copy(pathSegments = pathSegments) }
     }
 
+    fun showInfoDialog(){
+        _uiState.update { it.copy(isInfoDialogShown = true) }
+    }
+
+    fun hideInfoDialog(){
+        _uiState.update { it.copy(isInfoDialogShown = false) }
+    }
+
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
@@ -96,6 +104,7 @@ class MainViewModel(
         val files: List<File> = emptyList(),
         val clickedImage: File? = null,
         val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
-        val pathSegments: List<File> = emptyList()
+        val pathSegments: List<File> = emptyList(),
+        val isInfoDialogShown: Boolean = false
     )
 }

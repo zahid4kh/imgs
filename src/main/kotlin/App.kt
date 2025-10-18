@@ -33,6 +33,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.size.Size
 import theme.AppTheme
 
 
@@ -108,7 +111,10 @@ fun App(
                     title = image.nameWithoutExtension
                 ){
                     AsyncImage(
-                        model = image.absolutePath,
+                        model = ImageRequest.Builder(LocalPlatformContext.current)
+                            .data(image.absolutePath)
+                            .size(Size.ORIGINAL)
+                            .build(),
                         contentDescription = null,
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.fillMaxSize().padding(20.dp)
