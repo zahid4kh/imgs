@@ -1,7 +1,11 @@
 @file:JvmName("IMGS")
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -37,7 +41,9 @@ fun main(){
             window.minimumSize = Dimension(800, 600)
 
             AppTheme {
-                Column {
+                Column(
+                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
+                ) {
                     TopBar(
                         onMinimizeWindow = { windowState.isMinimized = true },
                         onHandleWindowSize = {
