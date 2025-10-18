@@ -10,6 +10,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import theme.getJetbrainsMonoFamily
 import java.io.File
 
 
@@ -35,12 +36,14 @@ internal fun PathSegments(
                     .padding(8.dp)
                     .pointerHoverIcon(PointerIcon.Hand),
                 style = MaterialTheme.typography.labelLarge,
+                fontFamily = getJetbrainsMonoFamily(),
                 fontWeight = FontWeight.Bold
             )
             if (index != pathSegments.lastIndex) {
                 Text(
                     text = "/",
                     style = MaterialTheme.typography.labelLarge,
+                    fontFamily = getJetbrainsMonoFamily(),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
