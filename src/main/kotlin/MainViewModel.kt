@@ -19,6 +19,9 @@ class MainViewModel(
     private val homeDir = System.getProperty("user.home")
     private val picsDir = File("$homeDir/Pictures")
 
+    private val _currentPath = MutableStateFlow(File("$picsDir"))
+    val currentPath = _currentPath.asStateFlow()
+
     init {
         viewModelScope.launch {
             val settings = database.getSettings()
@@ -26,22 +29,28 @@ class MainViewModel(
                 darkMode = settings.darkMode,
             )
         }
-
-        loadImages()
+        println("Current path is: ${_currentPath.value.absolutePath}")
+        loadFiles()
     }
 
-    private fun loadImages(){
+    private fun loadFiles(){
         viewModelScope.launch(Dispatchers.IO) {
-            val images = picsDir.listFiles().toList().filter { it.isFile }
-            println("Loaded ${images.size} images")
+            val files = _currentPath.value.listFiles().toList().sorted()
+            println("Loaded ${files.size} files")
             withContext(Dispatchers.Main){
                 _uiState.update {
                     it.copy(
-                        images = images
+                        files = files
                     )
                 }
             }
         }
+    }
+
+    fun updateCurrentDir(dir: File){
+        _currentPath.value = dir
+        println("Current path is: ${dir.absolutePath}")
+        loadFiles()
     }
 
     fun handleImageClick(image: File){
@@ -55,7 +64,7 @@ class MainViewModel(
     fun deleteImage(image: File){
         try {
             image.delete()
-            loadImages()
+            loadFiles()
         }catch (e: IOException){
             e.printStackTrace()
         }
@@ -73,7 +82,7 @@ class MainViewModel(
 
     data class UiState(
         val darkMode: Boolean = false,
-        val images: List<File> = emptyList(),
+        val files: List<File> = emptyList(),
         val clickedImage: File? = null
     )
 }
