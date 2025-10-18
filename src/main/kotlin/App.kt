@@ -10,11 +10,13 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,6 +45,9 @@ fun App(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val gridState = rememberLazyStaggeredGridState()
+    LaunchedEffect(uiState.currentPath){
+        gridState.animateScrollToItem(0)
+    }
     AppTheme(darkTheme = uiState.darkMode) {
         Box(
             modifier = Modifier
@@ -67,17 +72,19 @@ fun App(
                                 })
                             }
                         ){
-                            AsyncImage(
-                                model = file.absolutePath,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .animateItem(placementSpec = spring())
-                                    .clip(MaterialTheme.shapes.large)
-                                    .clickable(
-                                        onClick = { viewModel.handleImageClick(file) }
-                                    )
-                                    .pointerHoverIcon(PointerIcon.Hand)
-                            )
+                            Box{
+                                AsyncImage(
+                                    model = file.absolutePath,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .animateItem(placementSpec = spring())
+                                        .clip(MaterialTheme.shapes.large)
+                                        .clickable(
+                                            onClick = { viewModel.handleImageClick(file) }
+                                        )
+                                        .pointerHoverIcon(PointerIcon.Hand)
+                                )
+                            }
                         }
                     }else if(file.isDirectory){
                         val folderInteractionSource = remember { MutableInteractionSource() }
