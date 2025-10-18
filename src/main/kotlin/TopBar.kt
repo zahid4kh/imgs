@@ -2,6 +2,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.CropSquare
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
@@ -52,16 +55,35 @@ fun WindowScope.TopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
             ){
-                TopBarIcon(
-                    onClick = { viewModel.showInfoDialog() },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            contentDescription = null
-                        )
-                    }
-                )
+                Row(
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .clip(MaterialTheme.shapes.large)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    TopBarIcon(
+                        onClick = { viewModel.showSettingsDropDown() },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Settings,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                contentDescription = null
+                            )
+                        }
+                    )
+
+                    TopBarIcon(
+                        onClick = { viewModel.showInfoDialog() },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                contentDescription = null
+                            )
+                        }
+                    )
+                }
+
 
                 TopBarIcon(
                     onClick = { onMinimizeWindow() },

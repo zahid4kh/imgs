@@ -102,6 +102,14 @@ class MainViewModel(
         _uiState.update { it.copy(isInfoDialogShown = false) }
     }
 
+    fun showSettingsDropDown(){
+        _uiState.update { it.copy(isSettingsShown = true) }
+    }
+
+    fun hideSettingsDropDown(){
+        _uiState.update { it.copy(isSettingsShown = false) }
+    }
+
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
@@ -118,6 +126,7 @@ class MainViewModel(
         val clickedImage: File? = null,
         val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
         val pathSegments: List<File> = emptyList(),
-        val isInfoDialogShown: Boolean = false
+        val isInfoDialogShown: Boolean = false,
+        val isSettingsShown: Boolean = false
     )
 }
