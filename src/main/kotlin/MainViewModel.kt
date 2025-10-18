@@ -1,3 +1,5 @@
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -9,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
+import javax.imageio.ImageIO
 
 class MainViewModel(
     private val database: Database,
@@ -49,6 +52,16 @@ class MainViewModel(
             }
         }
     }
+
+//    fun loadImageBitmap(file: File): ImageBitmap? {
+//        return try {
+//            val bufferedImage = ImageIO.read(file)
+//            bufferedImage?.toComposeImageBitmap()
+//        } catch (e: Exception) {
+//            println("Error loading image: ${e.message}")
+//            null
+//        }
+//    }
 
     fun updateCurrentDir(dir: File){
         _uiState.update { it.copy(currentPath = dir) }
