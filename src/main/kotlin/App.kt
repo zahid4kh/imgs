@@ -26,6 +26,9 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowPosition
+import androidx.compose.ui.window.rememberWindowState
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
@@ -114,7 +117,8 @@ fun App(
             uiState.clickedImage?.let{ image ->
                 Window(
                     onCloseRequest = { viewModel.closeImageDialog() },
-                    title = image.nameWithoutExtension
+                    title = image.nameWithoutExtension,
+                    state = rememberWindowState(position = WindowPosition.Aligned(Alignment.Center))
                 ){
                     Box(
                         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
