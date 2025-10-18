@@ -91,11 +91,13 @@ fun App(
                                 imageVector = Icons.Default.Folder,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .padding(10.dp)
+                                    .padding(10.dp),
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
 
                             Text(
-                                text = file.name
+                                text = file.name,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }

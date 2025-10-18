@@ -1,5 +1,9 @@
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -7,14 +11,20 @@ import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CropSquare
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -36,12 +46,13 @@ fun WindowScope.TopBar(
     LaunchedEffect(uiState.currentPath){
         viewModel.generatePathSegments()
     }
-    WindowDraggableArea {
+    WindowDraggableArea(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .pointerHoverIcon(PointerIcon.Hand)
+    ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .pointerHoverIcon(PointerIcon.Hand),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -59,16 +70,42 @@ fun WindowScope.TopBar(
                     modifier = Modifier
                         .padding(vertical = 5.dp)
                         .clip(MaterialTheme.shapes.large)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                 ) {
                     TopBarIcon(
                         onClick = { viewModel.showSettingsDropDown() },
                         icon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Settings,
-                                tint = MaterialTheme.colorScheme.onSurface,
-                                contentDescription = null
-                            )
+                            Box{
+                                Icon(
+                                    imageVector = Icons.Outlined.Settings,
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    contentDescription = null
+                                )
+
+                                DropdownMenu(
+                                    expanded = uiState.isSettingsShown,
+                                    onDismissRequest = { viewModel.hideSettingsDropDown() },
+                                    shape = MaterialTheme.shapes.large,
+                                    border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onSurface),
+                                    containerColor = MaterialTheme.colorScheme.surface
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Theme") },
+                                        onClick = { viewModel.toggleDarkMode() },
+                                        trailingIcon = {
+                                            Icon(
+                                                imageVector = if(uiState.darkMode) Icons.Default.DarkMode else Icons.Default.LightMode,
+                                                contentDescription = null
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
+                                            .padding(horizontal = 3.dp)
+                                            .clip(MaterialTheme.shapes.large)
+                                    )
+                                }
+                            }
+
                         }
                     )
 
@@ -119,7 +156,6 @@ fun WindowScope.TopBar(
                 )
             }
         }
-
     }
 }
 
