@@ -1,3 +1,4 @@
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.spring
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
@@ -59,6 +60,7 @@ fun App(
                 state = gridState,
                 modifier = Modifier
                     .matchParentSize()
+                    .animateContentSize()
                     .padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalItemSpacing = 10.dp
@@ -72,19 +74,17 @@ fun App(
                                 })
                             }
                         ){
-                            Box{
-                                AsyncImage(
-                                    model = file.absolutePath,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .animateItem(placementSpec = spring())
-                                        .clip(MaterialTheme.shapes.large)
-                                        .clickable(
-                                            onClick = { viewModel.handleImageClick(file) }
-                                        )
-                                        .pointerHoverIcon(PointerIcon.Hand)
-                                )
-                            }
+                            AsyncImage(
+                                model = file.absolutePath,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .clip(MaterialTheme.shapes.large)
+                                    .clickable(
+                                        onClick = { viewModel.handleImageClick(file) }
+                                    )
+                                    .pointerHoverIcon(PointerIcon.Hand)
+                                    .animateItem(placementSpec = spring())
+                            )
                         }
                     }else if(file.isDirectory){
                         val folderInteractionSource = remember { MutableInteractionSource() }
@@ -92,6 +92,7 @@ fun App(
 
                         Row(
                             modifier = Modifier
+                                .animateItem(placementSpec = spring())
                                 .fillMaxWidth()
                                 .clip(MaterialTheme.shapes.large)
                                 .pointerHoverIcon(PointerIcon.Hand)
@@ -143,6 +144,5 @@ fun App(
                 }
             }
         }
-
     }
 }
