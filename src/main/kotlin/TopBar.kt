@@ -92,6 +92,7 @@ fun WindowScope.TopBar(
                                             .clip(MaterialTheme.shapes.large)
                                     )
 
+                                    //TODO()
                                     DropdownMenuItem(
                                         text = { Text("Preview on hover") },
                                         onClick = { viewModel.togglePreviewOnHover() },
