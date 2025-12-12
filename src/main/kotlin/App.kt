@@ -31,8 +31,7 @@ import com.github.panpf.sketch.LocalPlatformContext
 import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.request.disallowAnimatedImage
 import com.github.panpf.sketch.request.repeatCount
-import com.github.panpf.sketch.resize.Scale
-import com.github.panpf.sketch.resize.ScaleDecider
+import com.github.panpf.sketch.resize.Precision
 import com.github.panpf.sketch.resize.SizeResolver
 import com.github.panpf.sketch.util.Size
 import theme.AppTheme
@@ -80,6 +79,8 @@ fun App(
                                 ){
                                     disallowAnimatedImage(false)
                                     repeatCount(-1)
+                                    size(Size.Origin)
+                                    precision(Precision.SAME_ASPECT_RATIO)
                                 },
                                 contentDescription = null,
                                 modifier = Modifier
@@ -141,6 +142,7 @@ fun App(
                                 disallowAnimatedImage(false)
                                 repeatCount(-1)
                                 size(Size.Origin)
+                                precision(Precision.EXACTLY)
                             },
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
