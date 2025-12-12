@@ -1,3 +1,5 @@
+package ui
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.WindowScope
 import theme.getJetbrainsMonoFamily
+import viewmodel.MainViewModel
 
 @Composable
 fun WindowScope.TopBar(

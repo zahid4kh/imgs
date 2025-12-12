@@ -1,5 +1,6 @@
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toComposeImageBitmap
+package viewmodel
+
+import data.Database
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
-import javax.imageio.ImageIO
 
 class MainViewModel(
     private val database: Database,
@@ -26,7 +26,7 @@ class MainViewModel(
         viewModelScope.launch {
             generatePathSegments()
             val settings = database.getSettings()
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 _uiState.update {
                     it.copy(
                         darkMode = settings.darkMode
@@ -43,7 +43,7 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val files = _uiState.value.currentPath.listFiles().toList().sorted()
             println("Loaded ${files.size} files")
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 _uiState.update {
                     it.copy(
                         files = files

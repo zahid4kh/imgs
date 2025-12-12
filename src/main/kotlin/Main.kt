@@ -12,12 +12,16 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import di.appModule
 import theme.AppTheme
 import java.awt.Dimension
 import org.koin.core.context.startKoin
 import org.koin.java.KoinJavaComponent.getKoin
 import imgs.resources.*
 import org.jetbrains.compose.resources.painterResource
+import ui.App
+import ui.TopBar
+import viewmodel.MainViewModel
 
 
 fun main(){

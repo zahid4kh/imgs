@@ -1,3 +1,5 @@
+package ui
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.spring
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -32,9 +34,9 @@ import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.request.disallowAnimatedImage
 import com.github.panpf.sketch.request.repeatCount
 import com.github.panpf.sketch.resize.Precision
-import com.github.panpf.sketch.resize.SizeResolver
 import com.github.panpf.sketch.util.Size
 import theme.AppTheme
+import viewmodel.MainViewModel
 
 
 @Composable
