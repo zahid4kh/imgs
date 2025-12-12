@@ -1,13 +1,12 @@
 [versions]
-composePlugin = "1.9.0-beta03"
+composePlugin = "1.9.3"
 kotlin = "2.1.20"
 kotlinxCoroutines = "1.10.2"
 kotlinxSerializationJson = "1.8.1"
 koin = "4.0.3"
-hotReload = "1.0.0-rc02"
+hotReload = "1.1.0-alpha02"
 slf4j = "2.0.12"
 deskit = "1.4.0"
-coil = "3.3.0"
 viewModel = "2.9.5"
 
 [libraries]
@@ -25,9 +24,6 @@ slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4
 
 # Deskit
 deskit = { group = "com.github.zahid4kh", name = "deskit", version.ref = "deskit" }
-
-# Coil
-coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # ViewModel
 lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewModel" }
