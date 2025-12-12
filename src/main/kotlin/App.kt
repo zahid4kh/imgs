@@ -11,16 +11,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,13 +24,17 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.rememberWindowState
-import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.request.ImageRequest
-import coil3.size.Size
+import com.github.panpf.sketch.AsyncImage
+import com.github.panpf.sketch.LocalPlatformContext
+import com.github.panpf.sketch.request.ImageRequest
+import com.github.panpf.sketch.request.disallowAnimatedImage
+import com.github.panpf.sketch.request.repeatCount
+import com.github.panpf.sketch.resize.Scale
+import com.github.panpf.sketch.resize.ScaleDecider
+import com.github.panpf.sketch.resize.SizeResolver
+import com.github.panpf.sketch.util.Size
 import theme.AppTheme
 
 
@@ -75,7 +74,13 @@ fun App(
                             }
                         ){
                             AsyncImage(
-                                model = file.absolutePath,
+                                request = ImageRequest(
+                                    context = LocalPlatformContext.current,
+                                    uri = file.absolutePath
+                                ){
+                                    disallowAnimatedImage(false)
+                                    repeatCount(-1)
+                                },
                                 contentDescription = null,
                                 modifier = Modifier
                                     .clip(MaterialTheme.shapes.large)
@@ -132,10 +137,11 @@ fun App(
                         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)
                     ){
                         AsyncImage(
-                            model = ImageRequest.Builder(LocalPlatformContext.current)
-                                .data(image.absolutePath)
-                                .size(Size.ORIGINAL)
-                                .build(),
+                            request = ImageRequest(LocalPlatformContext.current, image.absolutePath){
+                                disallowAnimatedImage(false)
+                                repeatCount(-1)
+                                size(Size.Origin)
+                            },
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
                             modifier = Modifier.fillMaxSize().padding(20.dp)
