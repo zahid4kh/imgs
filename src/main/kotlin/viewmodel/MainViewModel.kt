@@ -19,6 +19,10 @@ class MainViewModel: ViewModel() {
     private val homeDir = System.getProperty("user.home")
     private val picsDir = File("$homeDir/Pictures")
 
+    private val imageExtensions = setOf(
+        "png", "jpg", "jpeg", "gif", "bmp", "webp", "heic", "heif", "svg", "ico", "tiff", "tif"
+    )
+
     init {
         viewModelScope.launch {
             generatePathSegments()
@@ -30,7 +34,10 @@ class MainViewModel: ViewModel() {
 
     private fun loadFiles(){
         viewModelScope.launch(Dispatchers.IO) {
-            val files = _uiState.value.currentPath.listFiles().toList().sorted()
+            val files = _uiState.value.currentPath.listFiles()
+                ?.filter { it.isDirectory || (it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions) }
+                ?.sorted()
+                ?: emptyList()
             println("Loaded ${files.size} files")
             withContext(Dispatchers.Main) {
                 _uiState.update {
@@ -42,18 +49,8 @@ class MainViewModel: ViewModel() {
         }
     }
 
-//    fun loadImageBitmap(file: File): ImageBitmap? {
-//        return try {
-//            val bufferedImage = ImageIO.read(file)
-//            bufferedImage?.toComposeImageBitmap()
-//        } catch (e: Exception) {
-//            println("Error loading image: ${e.message}")
-//            null
-//        }
-//    }
-
     fun updateCurrentDir(dir: File){
-        _uiState.update { it.copy(currentPath = dir) }
+        _uiState.update { it.copy(currentPath = dir, files = emptyList()) }
         println("Current path is: ${_uiState.value.currentPath}")
         loadFiles()
     }

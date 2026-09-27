@@ -65,7 +65,7 @@ fun App(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalItemSpacing = 10.dp
             ){
-                items(items = uiState.files){ file ->
+                items(items = uiState.files, key = { it.absolutePath }){ file ->
                     if(file.isFile){
                         ContextMenuArea(
                             items = {
