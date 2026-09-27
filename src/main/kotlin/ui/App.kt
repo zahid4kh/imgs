@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
@@ -46,6 +47,8 @@ fun App(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val gridState = rememberLazyStaggeredGridState()
+    val density = LocalDensity.current
+    val thumbnailSizePx = with(density) { (200.dp * 2f).roundToPx() }
     LaunchedEffect(uiState.currentPath){
         gridState.animateScrollToItem(0)
     }
@@ -60,7 +63,6 @@ fun App(
                 state = gridState,
                 modifier = Modifier
                     .matchParentSize()
-                    .animateContentSize()
                     .padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalItemSpacing = 10.dp
@@ -79,10 +81,9 @@ fun App(
                                     context = LocalPlatformContext.current,
                                     uri = file.absolutePath
                                 ){
-                                    disallowAnimatedImage(false)
-                                    repeatCount(-1)
-                                    size(Size.Origin)
-                                    precision(Precision.SAME_ASPECT_RATIO)
+                                    disallowAnimatedImage(true)
+                                    size(Size(thumbnailSizePx, thumbnailSizePx))
+                                    precision(Precision.LESS_PIXELS)
                                 },
                                 contentDescription = null,
                                 modifier = Modifier
