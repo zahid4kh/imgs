@@ -1,6 +1,5 @@
 package viewmodel
 
-import data.Database
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +12,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 
-class MainViewModel(
-    private val database: Database,
-): ViewModel() {
+class MainViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -25,14 +22,6 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             generatePathSegments()
-            val settings = database.getSettings()
-            withContext(Dispatchers.Main) {
-                _uiState.update {
-                    it.copy(
-                        darkMode = settings.darkMode
-                    )
-                }
-            }
         }
 
         println("Current path is: ${_uiState.value.currentPath?.absolutePath}")
@@ -110,18 +99,9 @@ class MainViewModel(
         _uiState.update { it.copy(isSettingsShown = false) }
     }
 
-    fun togglePreviewOnHover(){
-        _uiState.update { it.copy(isPreviewOnHoverOn = !it.isPreviewOnHoverOn) }
-    }
-
     fun toggleDarkMode() {
         val newDarkMode = !_uiState.value.darkMode
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
-
-        viewModelScope.launch {
-            val settings = database.getSettings()
-            database.saveSettings(settings.copy(darkMode = newDarkMode))
-        }
     }
 
     data class UiState(
@@ -131,7 +111,6 @@ class MainViewModel(
         val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
         val pathSegments: List<File> = emptyList(),
         val isInfoDialogShown: Boolean = false,
-        val isSettingsShown: Boolean = false,
-        val isPreviewOnHoverOn: Boolean = false
+        val isSettingsShown: Boolean = false
     )
 }

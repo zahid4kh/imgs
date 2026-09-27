@@ -94,29 +94,6 @@ fun WindowScope.TopBar(
                                             .padding(horizontal = 3.dp)
                                             .clip(MaterialTheme.shapes.large)
                                     )
-
-                                    //TODO()
-                                    DropdownMenuItem(
-                                        text = { Text("Preview on hover") },
-                                        onClick = { viewModel.togglePreviewOnHover() },
-                                        trailingIcon = {
-                                            Switch(
-                                                checked = uiState.isPreviewOnHoverOn,
-                                                onCheckedChange = { viewModel.togglePreviewOnHover() },
-                                                thumbContent = {
-                                                    Text(
-                                                        text = if(uiState.isPreviewOnHoverOn) "On" else "Off",
-                                                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 10.sp, fontWeight = FontWeight.Bold),
-                                                        fontFamily = getJetbrainsMonoFamily()
-                                                    )
-                                                }
-                                            )
-                                        },
-                                        modifier = Modifier
-                                            .pointerHoverIcon(PointerIcon.Hand)
-                                            .padding(horizontal = 3.dp)
-                                            .clip(MaterialTheme.shapes.large)
-                                    )
                                 }
                             }
 
