@@ -3,6 +3,9 @@ package viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,16 +37,25 @@ class MainViewModel: ViewModel() {
 
     private fun loadFiles(){
         viewModelScope.launch(Dispatchers.IO) {
-            val files = _uiState.value.currentPath.listFiles()
+            val entries = _uiState.value.currentPath.listFiles()
                 ?.filter { it.isDirectory || (it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions) }
                 ?.sorted()
-                ?.map { file ->
-                    FileEntry(
-                        file = file,
-                        imageCount = if (file.isDirectory) countImages(file) else null
-                    )
-                }
                 ?: emptyList()
+
+            val files = coroutineScope {
+                entries.map { file ->
+                    async {
+                        if (file.isDirectory) {
+                            if (containsImagesRecursively(file)) {
+                                FileEntry(file = file, imageCount = countImages(file))
+                            } else null
+                        } else {
+                            FileEntry(file = file, imageCount = null)
+                        }
+                    }
+                }.awaitAll().filterNotNull()
+            }
+
             println("Loaded ${files.size} files")
             withContext(Dispatchers.Main) {
                 _uiState.update {
@@ -59,6 +71,15 @@ class MainViewModel: ViewModel() {
         return dir.listFiles()
             ?.count { it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions }
             ?: 0
+    }
+
+    private fun containsImagesRecursively(dir: File): Boolean {
+        return try {
+            dir.walkTopDown()
+                .any { it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions }
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun updateCurrentDir(dir: File){
