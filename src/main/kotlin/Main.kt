@@ -12,6 +12,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.github.panpf.sketch.Sketch
+import com.github.panpf.sketch.SingletonSketch
+import com.github.panpf.sketch.decode.GifDecoder
+import com.github.panpf.sketch.decode.SvgDecoder
+import com.github.panpf.sketch.fetch.OkHttpHttpUriFetcher
 import di.appModule
 import theme.AppTheme
 import java.awt.Dimension
@@ -25,6 +30,16 @@ import viewmodel.MainViewModel
 
 
 fun main(){
+    SingletonSketch.setSafe { context ->
+        Sketch(context) {
+            components {
+                addFetcher(OkHttpHttpUriFetcher.Factory())
+                addDecoder(GifDecoder.Factory())
+                addDecoder(SvgDecoder.Factory())
+            }
+        }
+    }
+
     startKoin {
         modules(appModule)
     }
