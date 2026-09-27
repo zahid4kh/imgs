@@ -37,6 +37,12 @@ class MainViewModel: ViewModel() {
             val files = _uiState.value.currentPath.listFiles()
                 ?.filter { it.isDirectory || (it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions) }
                 ?.sorted()
+                ?.map { file ->
+                    FileEntry(
+                        file = file,
+                        imageCount = if (file.isDirectory) countImages(file) else null
+                    )
+                }
                 ?: emptyList()
             println("Loaded ${files.size} files")
             withContext(Dispatchers.Main) {
@@ -47,6 +53,12 @@ class MainViewModel: ViewModel() {
                 }
             }
         }
+    }
+
+    private fun countImages(dir: File): Int {
+        return dir.listFiles()
+            ?.count { it.isFile && !it.isHidden && it.extension.lowercase() in imageExtensions }
+            ?: 0
     }
 
     fun updateCurrentDir(dir: File){
@@ -101,9 +113,14 @@ class MainViewModel: ViewModel() {
         _uiState.value = _uiState.value.copy(darkMode = newDarkMode)
     }
 
+    data class FileEntry(
+        val file: File,
+        val imageCount: Int? = null
+    )
+
     data class UiState(
         val darkMode: Boolean = false,
-        val files: List<File> = emptyList(),
+        val files: List<FileEntry> = emptyList(),
         val clickedImage: File? = null,
         val currentPath: File = File("${System.getProperty("user.home")}/Pictures"),
         val pathSegments: List<File> = emptyList(),

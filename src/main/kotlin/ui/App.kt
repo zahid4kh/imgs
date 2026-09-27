@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -67,7 +69,8 @@ fun App(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalItemSpacing = 10.dp
             ){
-                items(items = uiState.files, key = { it.absolutePath }){ file ->
+                items(items = uiState.files, key = { it.file.absolutePath }){ entry ->
+                    val file = entry.file
                     if(file.isFile){
                         ContextMenuArea(
                             items = {
@@ -114,13 +117,20 @@ fun App(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Folder,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(10.dp),
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
+                            BadgedBox(
+                                badge = {
+                                    if (entry.imageCount != null && entry.imageCount > 0) {
+                                        Badge { Text(entry.imageCount.toString()) }
+                                    }
+                                },
+                                modifier = Modifier.padding(10.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Folder,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
 
                             Text(
                                 text = file.name,
