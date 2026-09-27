@@ -26,7 +26,6 @@ A modern, cross-platform desktop image gallery application built with Kotlin and
 
 - **Asynchronous Image Loading**: Powered by Coil 3 for efficient image loading
 - **MVVM Architecture**: Clean separation with ViewModel and dependency injection (Koin)
-- **Persistent Settings**: User preferences saved to `~/.imgs/settings.json`
 - **Cross-platform**: Native packages for Windows (MSI/EXE), macOS (DMG), and Linux (DEB)
 - **Hot Reload Support**: Fast development iteration
 
@@ -108,8 +107,6 @@ AppModule.kt (Dependency Injection - Koin)
     ↓
 MainViewModel.kt (State & Business Logic)
     ↓
-Database.kt (Persistence Layer)
-    ↓
 App.kt & TopBar.kt (UI Composables)
 ```
 
@@ -124,13 +121,6 @@ App.kt & TopBar.kt (UI Composables)
 5. **Delete Images**: Right-click any image and select "Delete" from the context menu
 6. **Toggle Theme**: Click the settings icon in the top-right, then toggle dark mode
 7. **Window Controls**: Use the custom minimize, maximize, and close buttons in the top-right
-
-## Configuration
-
-User settings are stored in `~/.imgs/settings.json` and include:
-
-- Dark mode preference
-- Additional settings (expandable)
 
 ## Generated with Compose for Desktop Wizard
 
